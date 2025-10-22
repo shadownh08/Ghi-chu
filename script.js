@@ -41,10 +41,13 @@ onValue(ref(db, "notes"), (snapshot) => {
   noteList.innerHTML = "";
   const data = snapshot.val();
   if (data) {
-    Object.keys(data).forEach((id) => {
+    // Lấy danh sách key và đảo ngược thứ tự
+    const ids = Object.keys(data).reverse();
+    ids.forEach((id) => {
       const li = document.createElement("li");
       li.textContent = `${data[id].text} (${data[id].time})`;
       noteList.appendChild(li);
     });
   }
 });
+

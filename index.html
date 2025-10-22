@@ -1,26 +1,17 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>📒 Xàm Lol cùng 12A2</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Xàm LoL cùng 12A2</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>📘 Ghi chú chung</h1>
-
-    <div class="input-area">
-      <input id="noteInput" type="text" placeholder="✏️ Viết ghi chú... (nhấn Enter để thêm)" />
-      <button id="addBtn">Thêm</button>
-    </div>
-
-    <ul id="noteList" aria-live="polite"></ul>
-
-    <footer class="footer">Mọi người cùng viết — cập nhật tức thì</footer>
+    <h1>📝 Ghi chú chung</h1>
+    <input type="text" id="noteInput" placeholder="Nhập ghi chú và nhấn Enter..." />
+    <ul id="noteList"></ul>
   </div>
-
-  <!-- script as module (import Firebase modules inside) -->
   <script type="module" src="script.js"></script>
 </body>
 </html>

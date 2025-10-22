@@ -1,9 +1,10 @@
-// Import các hàm cần dùng từ Firebase
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, push, set, onValue } from "firebase/database";
-import { getAnalytics } from "firebase/analytics";
+// script.js (module) - chạy với Firebase v11+ (import từ CDN)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import {
+  getDatabase, ref, push, set, onValue, update, remove
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-// Cấu hình Firebase
+// === Dán firebaseConfig của bạn vào đây ===
 const firebaseConfig = {
   apiKey: "AIzaSyCtna9R5Rk7xp5YDoMG9EDeLenKwXYd4kw",
   authDomain: "ghi-chu-3680a.firebaseapp.com",
@@ -14,43 +15,97 @@ const firebaseConfig = {
   appId: "1:137043146791:web:a192a194f42114700d7602",
   measurementId: "G-N4RLX5X24X"
 };
+// ==========================================
 
-// Khởi tạo Firebase
+// Khởi tạo Firebase + DB
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 const db = getDatabase(app);
 
-// Lấy các phần tử từ HTML
+// DOM
 const noteInput = document.getElementById("noteInput");
 const addBtn = document.getElementById("addBtn");
 const noteList = document.getElementById("noteList");
 
-// Hàm thêm ghi chú
-addBtn.addEventListener("click", () => {
-  const noteText = noteInput.value.trim();
-  if (noteText !== "") {
-    const noteRef = push(ref(db, "notes"));
-    set(noteRef, {
-      text: noteText,
-      time: new Date().toLocaleString(),
-      createdAt: Date.now() // thêm thời gian tạo để sắp xếp
+// HÀM thêm note
+function addNote() {
+  const txt = noteInput.value.trim();
+  if (!txt) return;
+  const noteRef = push(ref(db, "notes"));
+  set(noteRef, {
+    text: txt,
+    time: new Date().toLocaleString(),
+    createdAt: Date.now()
+  });
+  noteInput.value = "";
+  noteInput.focus();
+}
+
+// Hỗ trợ: nhấn Enter để thêm
+noteInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault(); // tránh submit form nếu có
+    addNote();
+  }
+});
+addBtn.addEventListener("click", addNote);
+
+// 1 lần chạy: nếu có note cũ thiếu createdAt thì cập nhật (chạy 1 lần tự động)
+onValue(ref(db, "notes"), (snapshot) => {
+  const data = snapshot.val();
+  if (data) {
+    Object.entries(data).forEach(([id, note]) => {
+      if (!note.createdAt) {
+        update(ref(db, "notes/" + id), { createdAt: Date.now() });
+      }
     });
-    noteInput.value = "";
   }
 });
 
-// Lắng nghe thay đổi dữ liệu và hiển thị
+// Lắng nghe realtime và hiển thị (sắp theo createdAt giảm dần)
 onValue(ref(db, "notes"), (snapshot) => {
   noteList.innerHTML = "";
   const data = snapshot.val();
-  if (data) {
-    const notes = Object.entries(data)
-      .sort((a, b) => b[1].createdAt - a[1].createdAt); // sắp theo thời gian giảm dần
+  if (!data) return;
 
-    notes.forEach(([id, note]) => {
-      const li = document.createElement("li");
-      li.textContent = `${note.text} (${note.time})`;
-      noteList.appendChild(li);
-    });
-  }
+  const notes = Object.entries(data)
+    .sort((a, b) => (b[1].createdAt || 0) - (a[1].createdAt || 0));
+
+  notes.forEach(([id, note]) => {
+    const li = document.createElement("li");
+    li.className = "note";
+
+    const left = document.createElement("div");
+    left.style.flex = "1";
+
+    const text = document.createElement("div");
+    text.textContent = note.text;
+    text.style.wordBreak = "break-word";
+
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    meta.textContent = note.time || "";
+
+    left.appendChild(text);
+    left.appendChild(meta);
+
+    const right = document.createElement("div");
+
+    // nút xóa
+    const delBtn = document.createElement("button");
+    delBtn.className = "btn-trash";
+    delBtn.title = "Xóa ghi chú";
+    delBtn.innerHTML = '🗑️';
+    delBtn.onclick = () => {
+      if (confirm("Xóa ghi chú này?")) {
+        remove(ref(db, "notes/" + id));
+      }
+    };
+
+    right.appendChild(delBtn);
+
+    li.appendChild(left);
+    li.appendChild(right);
+
+    noteList.appendChild(li);
+  });
 });

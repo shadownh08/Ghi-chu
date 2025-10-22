@@ -24,19 +24,22 @@ noteInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter" && noteInput.value.trim() !== "") {
     push(ref(db, "notes"), {
       text: noteInput.value.trim(),
-      time: serverTimestamp()
+      time: Date.now() // dùng thời gian local để đảm bảo có giá trị ngay
     });
     noteInput.value = "";
   }
 });
 
-// Hiển thị ghi chú theo thứ tự mới nhất
+// Hiển thị ghi chú (mới nhất lên đầu)
 onValue(ref(db, "notes"), (snapshot) => {
   const notes = [];
   snapshot.forEach(child => notes.push(child.val()));
+
+  // Sắp xếp theo thời gian (mới nhất trước)
   notes.sort((a, b) => (b.time || 0) - (a.time || 0));
 
+  // Hiển thị
   noteList.innerHTML = notes
-    .map(n => `<li>${n.text}</li>`)
+    .map(n => `<li>${n.text || "(không có nội dung)"}</li>`)
     .join("");
 });

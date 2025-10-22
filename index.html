@@ -1,22 +1,16 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Ghi chú cá nhân</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Ghi chú Firebase</title>
 </head>
-<script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js"></script>
-<script src="script.js"></script>
-
 <body>
-    <h1>📝 Ghi chú của tôi</h1>
-    <textarea id="noteInput" placeholder="Nhập ghi chú..."></textarea>
-    <button id="saveBtn">Lưu ghi chú</button>
+  <h2>📒 Ghi chú chung</h2>
+  <input id="noteInput" placeholder="Nhập ghi chú..." />
+  <button id="addBtn">Thêm</button>
+  <ul id="noteList"></ul>
 
-    <h2>Danh sách ghi chú</h2>
-    <ul id="noteList"></ul>
-
-    <script src="script.js"></script>
+  <!-- Script phải là module -->
+  <script type="module" src="script.js"></script>
 </body>
 </html>

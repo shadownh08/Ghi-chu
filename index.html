@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>💬 Xàm LoL cùng 12A2</title>
 <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
 <style>
 body {
   background: linear-gradient(135deg,#a18cd1 0%,#fbc2eb 100%);
@@ -30,13 +32,32 @@ body {
 
 <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-6">
   <h1 class="text-3xl font-bold text-center text-indigo-700 mb-4">💬 Ghi chú chung</h1>
+
+  <!-- 🔐 Khu vực đăng nhập -->
+  <div id="loginSection" class="text-center mb-4">
+    <button id="loginBtn" class="bg-indigo-500 text-white px-4 py-2 rounded-xl hover:bg-indigo-600 transition">
+      🔑 Đăng nhập Google
+    </button>
+  </div>
+
+  <!-- 👤 Hiển thị thông tin user -->
+  <div id="userInfo" class="hidden flex justify-between items-center bg-indigo-50 p-3 rounded-xl mb-4">
+    <div class="flex items-center space-x-2">
+      <img id="userPic" src="" class="w-8 h-8 rounded-full" />
+      <span id="userName" class="text-indigo-700 font-semibold"></span>
+    </div>
+    <button id="logoutBtn" class="text-red-500 hover:text-red-700">Đăng xuất</button>
+  </div>
+
+  <!-- 📝 Ghi chú -->
   <input id="noteInput" type="text" placeholder="Nhập ghi chú và nhấn Enter..."
-    class="w-full p-3 border-2 border-indigo-400 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4" />
+    class="w-full p-3 border-2 border-indigo-400 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4 hidden" />
   <div id="notesContainer" class="space-y-3 max-h-96 overflow-y-auto"></div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
 import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js";
 
 // Firebase config
@@ -50,66 +71,109 @@ const firebaseConfig = {
   appId: "1:137043146791:web:a192a194f42114700d7602",
   measurementId: "G-N4RLX5X24X"
 };
-
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getDatabase(app);
+const provider = new GoogleAuthProvider();
 
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const loginSection = document.getElementById("loginSection");
+const userInfo = document.getElementById("userInfo");
+const userPic = document.getElementById("userPic");
+const userName = document.getElementById("userName");
 const noteInput = document.getElementById("noteInput");
 const notesContainer = document.getElementById("notesContainer");
 
-// danh sách màu nhẹ nhàng cho bong bóng
 const colors = ["#E0F7FA","#FFF3E0","#E8F5E9","#F3E5F5","#FFFDE7","#E1F5FE","#FCE4EC"];
 
-// Thêm ghi chú
-noteInput.addEventListener("keypress", e => {
-  if(e.key==="Enter" && noteInput.value.trim()!==""){
-    push(ref(db,"notes"), { text: noteInput.value.trim(), time: Date.now() })
-      .then(()=>console.log("Thêm thành công"))
-      .catch(err=>console.error(err));
-    noteInput.value="";
+// Đăng nhập
+loginBtn.addEventListener("click", async () => {
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (error) {
+    alert("Đăng nhập thất bại!");
+    console.error(error);
   }
 });
 
-// Hiển thị ghi chú mới nhất lên đầu
-onChildAdded(ref(db,"notes"), snapshot=>{
-  const note = snapshot.val();
-  const key = snapshot.key;
+// Đăng xuất
+logoutBtn.addEventListener("click", () => signOut(auth));
 
-  const div = document.createElement("div");
-  div.className = "note";
-  div.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-  div.dataset.key = key;
+// Khi trạng thái auth thay đổi
+onAuthStateChanged(auth, user => {
+  if (user) {
+    loginSection.classList.add("hidden");
+    userInfo.classList.remove("hidden");
+    noteInput.classList.remove("hidden");
 
-  const left = document.createElement("div");
-  const textEl = document.createElement("p");
-  textEl.className = "text-gray-800 text-base";
-  textEl.textContent = note.text;
+    userPic.src = user.photoURL;
+    userName.textContent = user.displayName;
 
-  const timeEl = document.createElement("p");
-  const date = new Date(note.time);
-  timeEl.className = "text-xs text-gray-500 mt-1 italic";
-  timeEl.textContent = "🕓 " + date.toLocaleString();
+    loadNotes(user.uid);
+  } else {
+    loginSection.classList.remove("hidden");
+    userInfo.classList.add("hidden");
+    noteInput.classList.add("hidden");
+    notesContainer.innerHTML = "";
+  }
+});
 
-  left.appendChild(textEl);
-  left.appendChild(timeEl);
+function loadNotes(userId) {
+  notesContainer.innerHTML = "";
+  onChildAdded(ref(db, "notes"), snapshot => {
+    const note = snapshot.val();
+    const key = snapshot.key;
+    const div = document.createElement("div");
+    div.className = "note";
+    div.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    div.dataset.key = key;
 
-  const right = document.createElement("div");
-  const delBtn = document.createElement("button");
-  delBtn.textContent="❌";
-  delBtn.title="Xóa ghi chú";
-  delBtn.className="text-red-500 hover:text-red-700 px-2 py-1 rounded";
-  delBtn.addEventListener("click",()=>{
-    if(!confirm("Xác nhận xóa ghi chú này?")) return;
-    remove(ref(db,"notes/"+key))
-      .then(()=>{ const el = notesContainer.querySelector(`[data-key="${key}"]`); if(el) el.remove(); })
-      .catch(err=>{console.error(err); alert("Không xóa được, xem console."); });
+    const left = document.createElement("div");
+    const textEl = document.createElement("p");
+    textEl.className = "text-gray-800 text-base";
+    textEl.textContent = note.text;
+
+    const timeEl = document.createElement("p");
+    const date = new Date(note.time);
+    timeEl.className = "text-xs text-gray-500 mt-1 italic";
+    timeEl.textContent = "🕓 " + date.toLocaleString();
+
+    left.appendChild(textEl);
+    left.appendChild(timeEl);
+
+    const right = document.createElement("div");
+    if (note.userId === userId) {
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "❌";
+      delBtn.title = "Xóa ghi chú của bạn";
+      delBtn.className = "text-red-500 hover:text-red-700 px-2 py-1 rounded";
+      delBtn.addEventListener("click", () => {
+        if (!confirm("Xác nhận xóa ghi chú này?")) return;
+        remove(ref(db, "notes/" + key)).then(() => {
+          const el = notesContainer.querySelector(`[data-key="${key}"]`);
+          if (el) el.remove();
+        });
+      });
+      right.appendChild(delBtn);
+    }
+
+    div.appendChild(left);
+    div.appendChild(right);
+    notesContainer.prepend(div);
   });
-  right.appendChild(delBtn);
+}
 
-  div.appendChild(left);
-  div.appendChild(right);
-
-  notesContainer.prepend(div);
+// Thêm ghi chú
+noteInput.addEventListener("keypress", e => {
+  if (e.key === "Enter" && noteInput.value.trim() !== "" && auth.currentUser) {
+    push(ref(db, "notes"), {
+      text: noteInput.value.trim(),
+      time: Date.now(),
+      userId: auth.currentUser.uid
+    });
+    noteInput.value = "";
+  }
 });
 </script>
 </body>

@@ -1,131 +1,394 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>💬 Xàm LoL cùng 12A2</title>
-<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>🎃 Xàm LoL cùng 12A2 👻🕸️</title>
+
+<!-- Firebase modules will be imported inside the module script -->
+<link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
 <style>
-body {
-  background: linear-gradient(135deg,#a18cd1 0%,#fbc2eb 100%);
-  font-family: "Poppins", sans-serif;
-}
-.note {
-  animation: slideIn 0.3s ease forwards;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 12px;
-  border-radius: 15px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.note:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15);}
-@keyframes slideIn { from {opacity:0; transform:translateY(-10px) scale(0.95);} to {opacity:1; transform:translateY(0) scale(1);} }
+  :root{
+    --bg1:#ffb347; /* cam */
+    --bg2:#7b2ff7; /* tím */
+    --card:#fffefc;
+    --accent:#ff6b6b;
+  }
+  html,body{height:100%;margin:0;font-family:"Montserrat",system-ui,Arial;}
+  body{
+    background: radial-gradient(circle at 10% 10%, rgba(255,255,255,0.06), transparent 10%),
+                linear-gradient(135deg,var(--bg1),var(--bg2));
+    overflow:hidden;
+    color:#121212;
+  }
+
+  /* Fullpage container */
+  .wrap{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:36px;
+  }
+
+  /* main panel */
+  .panel{
+    width:95%;
+    max-width:1100px;
+    height:85vh;
+    background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,250,250,0.92));
+    border-radius:20px;
+    box-shadow:0 30px 80px rgba(0,0,0,0.35);
+    overflow:hidden;
+    position:relative;
+    display:grid;
+    grid-template-columns: 1fr 420px;
+    gap:20px;
+  }
+
+  /* left: decorative full-bleed */
+  .decor {
+    position:relative;
+    padding:28px;
+    overflow:hidden;
+    background: linear-gradient(180deg, rgba(123,47,247,0.04), rgba(255,179,71,0.02));
+  }
+  .right {
+    padding:20px;
+    border-left:1px dashed rgba(0,0,0,0.04);
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* Title */
+  .title {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:14px;
+  }
+  .title h1{
+    margin:0;
+    font-family:"Varela Round", sans-serif;
+    font-size:28px;
+    letter-spacing:1px;
+    background: linear-gradient(90deg,#fff 0%, #ffeaa7 40%, #ffd1f5 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color:transparent;
+    animation: glow 3s linear infinite;
+  }
+  @keyframes glow{
+    0%{filter:drop-shadow(0 0 3px rgba(255,255,255,0.2))}
+    50%{filter:drop-shadow(0 0 12px rgba(255,120,80,0.6))}
+    100%{filter:drop-shadow(0 0 3px rgba(255,255,255,0.2))}
+  }
+
+  /* moon + clouds */
+  .moon{
+    position:absolute; right:16%; top:-6%;
+    width:230px; height:230px; border-radius:50%;
+    background: radial-gradient(circle at 35% 35%, #fff7d6, #ffd36b 30%, #ffc056 60%);
+    opacity:0.18; filter:blur(2px);
+    transform:rotate(8deg);
+  }
+  .cloud{
+    position:absolute; left:6%; top:4%;
+    width:320px; height:80px; border-radius:40px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+    filter: blur(6px);
+    opacity:0.25;
+    animation: cloudMove 20s linear infinite;
+  }
+  @keyframes cloudMove { from{transform:translateX(-30px)} 50%{transform:translateX(30px)} to{transform:translateX(-30px)} }
+
+  /* gentle ghosts floating */
+  .ghost {
+    position:absolute;
+    width:120px;height:120px;border-radius:60px;
+    background:radial-gradient(circle at 30% 28%, rgba(255,255,255,0.95), rgba(255,255,255,0.8));
+    opacity:0.12;
+    filter: blur(1px);
+    animation: ghostFloat 9s ease-in-out infinite;
+  }
+  .ghost.g2{left:8%; top:30%; width:90px; height:90px; animation-duration:11s; opacity:0.14}
+  .ghost.g3{left:20%; top:60%; width:110px; height:110px; animation-duration:13s; opacity:0.10}
+  @keyframes ghostFloat{
+    0%{transform:translateY(0) translateX(0) rotate(-6deg)}
+    50%{transform:translateY(25px) translateX(18px) rotate(6deg)}
+    100%{transform:translateY(0) translateX(0) rotate(-6deg)}
+  }
+
+  /* spider + thread */
+  .spider {
+    position:absolute; left:6%; top:6%;
+    width:18px;height:18px;border-radius:50%;
+    background: radial-gradient(circle at 40% 30%, #000, #333);
+    animation: spiderDrop 6s linear infinite;
+    box-shadow:0 2px 6px rgba(0,0,0,0.4);
+  }
+  .thread {
+    position:absolute; left:15px; top:-40px;
+    width:2px; height:80px; background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.22));
+    transform-origin:top center;
+    animation: threadSwing 6s linear infinite;
+  }
+  @keyframes spiderDrop{ 0%{transform:translateY(-140px)} 50%{transform:translateY(8px)} 100%{transform:translateY(-140px)} }
+  @keyframes threadSwing{ 0%{transform:rotate(-6deg)} 50%{transform:rotate(6deg)} 100%{transform:rotate(-6deg)} }
+
+  /* fire flicker */
+  .fire {
+    position:absolute; right:6%; bottom:6%;
+    width:280px; height:120px; border-radius:12px;
+    background: radial-gradient(circle at 40% 20%, rgba(255,200,80,0.12), transparent 20%),
+                conic-gradient(from 140deg at 50% 50%, rgba(255,120,60,0.05), rgba(123,47,247,0.05));
+    opacity:0.16;
+    animation: firePulse 3s ease-in-out infinite;
+  }
+  @keyframes firePulse{ 0%{opacity:0.12}50%{opacity:0.22}100%{opacity:0.12} }
+
+  /* notes area (left) */
+  .notes-area{
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    gap:12px;
+    padding:28px;
+  }
+  .panel .left-head{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+  .subtitle{color:#4b2b8a;font-weight:600}
+
+  .notes-list{
+    margin-top:6px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    overflow:auto;
+    padding-right:6px;
+  }
+
+  /* note card */
+  .note-card{
+    display:flex;justify-content:space-between;gap:12px;align-items:flex-start;
+    padding:12px;border-radius:12px;background:var(--card);
+    border:1px solid rgba(0,0,0,0.04);
+    box-shadow:0 10px 30px rgba(16,24,40,0.06);
+    transform-origin:center; transition:transform .18s, box-shadow .18s, opacity .18s;
+    animation: popIn 0.28s ease;
+  }
+  @keyframes popIn{ from{opacity:0; transform:translateY(-8px) scale(.98)} to{opacity:1; transform:translateY(0) scale(1)} }
+  .note-left{flex:1}
+  .note-text{font-size:15px;margin:0 0 6px 0;color:#221;}
+  .note-time{font-size:12px;color:#5b5b6a;margin:0}
+
+  .note-actions{flex:none;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+  .btn-delete{background:transparent;border:none;color:var(--accent);cursor:pointer;font-weight:700}
+  .btn-delete:hover{transform:scale(1.06)}
+
+  /* right column: input + controls */
+  .right .controls{display:flex;flex-direction:column;gap:12px;padding:18px}
+  .right .input{
+    display:flex;gap:8px;align-items:center;
+  }
+  .text-input{
+    flex:1;padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,0.06);font-size:15px;
+    box-shadow:0 6px 18px rgba(123,97,255,0.05);
+  }
+  .btn-send{
+    padding:10px 14px;border-radius:10px;background:linear-gradient(180deg,#ff7a6b,#ff6b6b);color:#fff;border:none;cursor:pointer;font-weight:700;
+  }
+  .mute {
+    padding:8px 12px;border-radius:10px;background:#fff;border:1px solid rgba(0,0,0,0.06);cursor:pointer;
+  }
+
+  .smallnote{font-size:13px;color:#6b6b76;text-align:center;margin-top:6px}
+
+  /* responsive */
+  @media (max-width:980px){
+    .panel{grid-template-columns:1fr; height:92vh;}
+    .decor{order:2}
+    .right{order:1;border-left:none;border-top:1px dashed rgba(0,0,0,0.06)}
+  }
 </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen p-4">
+<body>
+  <div class="wrap">
+    <div class="panel">
+      <div class="decor">
+        <div class="moon"></div>
+        <div class="cloud"></div>
+        <div class="ghost"></div>
+        <div class="ghost g2"></div>
+        <div class="ghost g3"></div>
+        <div class="spider"></div>
+        <div class="thread"></div>
+        <div class="fire"></div>
 
-<div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-6">
-  <h1 class="text-3xl font-bold text-center text-indigo-700 mb-4">💬 Ghi chú chung</h1>
-  <input id="noteInput" type="text" placeholder="Nhập ghi chú và nhấn Enter..."
-    class="w-full p-3 border-2 border-indigo-400 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4" />
-  <div id="notesContainer" class="space-y-3 max-h-96 overflow-y-auto"></div>
-</div>
+        <div class="notes-area">
+          <div class="left-head">
+            <div>
+              <div class="title">
+                <div style="font-size:20px">🎃👻🕸️</div>
+                <h1>Xàm LoL cùng 12A2</h1>
+              </div>
+              <div class="subtitle">Halloween Party Edition</div>
+            </div>
+            <div style="text-align:right;color:#4b2b8a;font-weight:600">Have a spooky day!</div>
+          </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js";
+          <div class="notes-list" id="notesList" aria-live="polite"></div>
+        </div>
+      </div>
 
-// Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyCtna9R5Rk7xp5YDoMG9EDeLenKwXYd4kw",
-  authDomain: "ghi-chu-3680a.firebaseapp.com",
-  databaseURL: "https://ghi-chu-3680a-default-rtdb.firebaseio.com",
-  projectId: "ghi-chu-3680a",
-  storageBucket: "ghi-chu-3680a.firebasestorage.app",
-  messagingSenderId: "137043146791",
-  appId: "1:137043146791:web:a192a194f42114700d7602",
-  measurementId: "G-N4RLX5X24X"
-};
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+      <div class="right">
+        <div class="controls">
+          <div class="input">
+            <input id="noteInput" class="text-input" placeholder="Nhập ghi chú... (nhấn Enter để gửi)" />
+            <button id="sendBtn" class="btn-send">Gửi</button>
+          </div>
 
-// 👉 Tạo ID người dùng cục bộ (lưu localStorage)
-let userId = localStorage.getItem("userId");
-if(!userId){
-  userId = "user-" + Math.random().toString(36).substring(2,10);
-  localStorage.setItem("userId", userId);
-  console.log("Tạo user mới:", userId);
-} else {
-  console.log("Đang dùng user:", userId);
-}
+          <div style="display:flex;gap:8px;align-items:center;justify-content:space-between">
+            <div style="display:flex;gap:8px;align-items:center">
+              <button id="musicToggle" class="mute">🔊 Nhạc</button>
+              <button id="clearLocal" class="mute" title="Xóa chỉ trên giao diện">🧹 Dọn nhanh</button>
+            </div>
+            <div style="font-size:13px;color:#6b6b76">Realtime • Mới nhất lên đầu</div>
+          </div>
 
-const noteInput = document.getElementById("noteInput");
-const notesContainer = document.getElementById("notesContainer");
+          <div class="smallnote">Ai cũng có thể viết. Chỉ xóa được ghi chú của chính mình.</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-const colors = ["#E0F7FA","#FFF3E0","#E8F5E9","#F3E5F5","#FFFDE7","#E1F5FE","#FCE4EC"];
+  <!-- background music (Halloween Fun) -->
+<audio id="bgm" loop>
+  <source src="https://assets.mixkit.co/music/preview/mixkit-halloween-fun-1082.mp3" type="audio/mpeg">
+  Trình duyệt của bạn không hỗ trợ phát nhạc.
+</audio>
 
-// ✍️ Thêm ghi chú mới
-noteInput.addEventListener("keypress", e => {
-  if(e.key==="Enter" && noteInput.value.trim()!==""){
-    push(ref(db,"notes"), {
-      text: noteInput.value.trim(),
-      time: Date.now(),
-      userId: userId
-    })
-    .then(()=>console.log("Đã thêm ghi chú"))
-    .catch(err=>console.error(err));
-    noteInput.value="";
+
+  <script type="module">
+  // Firebase imports (10.x)
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+  import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js";
+
+  // --------- Firebase config (dán config của anh) ----------
+  const firebaseConfig = {
+    apiKey: "AIzaSyCtna9R5Rk7xp5YDoMG9EDeLenKwXYd4kw",
+    authDomain: "ghi-chu-3680a.firebaseapp.com",
+    databaseURL: "https://ghi-chu-3680a-default-rtdb.firebaseio.com",
+    projectId: "ghi-chu-3680a",
+    storageBucket: "ghi-chu-3680a.firebasestorage.app",
+    messagingSenderId: "137043146791",
+    appId: "1:137043146791:web:a192a194f42114700d7602",
+    measurementId: "G-N4RLX5X24X"
+  };
+  // ---------------------------------------------------------
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const notesRef = ref(db, "notes");
+
+  // userId cục bộ
+  let userId = localStorage.getItem("userId");
+  if(!userId){
+    userId = "u-" + Math.random().toString(36).slice(2,9);
+    localStorage.setItem("userId", userId);
   }
-});
 
-// 📋 Hiển thị ghi chú mới nhất lên đầu
-onChildAdded(ref(db,"notes"), snapshot=>{
-  const note = snapshot.val();
-  const key = snapshot.key;
+  // DOM
+  const noteInput = document.getElementById("noteInput");
+  const notesList = document.getElementById("notesList");
+  const sendBtn = document.getElementById("sendBtn");
+  const clearLocal = document.getElementById("clearLocal");
+  const musicToggle = document.getElementById("musicToggle");
+  const bgm = document.getElementById("bgm");
+  const COLORS = ["#FFF8E1","#FFF3E0","#E8F5E9","#F3E5F5","#E1F5FE","#FFFDE7","#FFF0F6"];
 
-  const div = document.createElement("div");
-  div.className = "note";
-  div.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-  div.dataset.key = key;
+  // Enter or click to send
+  async function sendNote(){
+    const txt = noteInput.value.trim();
+    if(!txt) return;
+    try{
+      await push(notesRef, { text: txt, time: Date.now(), userId });
+      noteInput.value = "";
+      noteInput.focus();
+    } catch(e){ console.error("Push error:", e); alert("Không lưu được (xem console)."); }
+  }
+  noteInput.addEventListener("keydown", e => { if(e.key === "Enter") sendNote(); });
+  sendBtn.addEventListener("click", sendNote);
 
-  const left = document.createElement("div");
-  const textEl = document.createElement("p");
-  textEl.className = "text-gray-800 text-base";
-  textEl.textContent = note.text;
+  // clear UI quickly
+  clearLocal.addEventListener("click", () => {
+    if(!confirm("Xóa nhanh trên giao diện? (Không xóa DB)")) return;
+    notesList.innerHTML = "";
+  });
 
-  const timeEl = document.createElement("p");
-  const date = new Date(note.time);
-  timeEl.className = "text-xs text-gray-500 mt-1 italic";
-  timeEl.textContent = "🕓 " + date.toLocaleString();
+  // music toggle
+  let musicOn = false;
+  musicToggle.addEventListener("click", () => {
+    musicOn = !musicOn;
+    if(musicOn){
+      bgm.play().catch(()=>{}); // browsers may block until user interacts
+      musicToggle.textContent = "🔇 Tắt nhạc";
+    } else {
+      bgm.pause();
+      musicToggle.textContent = "🔊 Nhạc";
+    }
+  });
 
-  left.appendChild(textEl);
-  left.appendChild(timeEl);
+  // render notes: use onValue to get full list and sort newest first
+  onValue(notesRef, snap => {
+    const data = snap.val();
+    notesList.innerHTML = "";
+    if(!data) return;
+    // convert to array of {key, text, time, userId}
+    const arr = Object.entries(data).map(([k,v]) => ({ key:k, ...v }))
+      .sort((a,b) => (b.time || 0) - (a.time || 0));
+    arr.forEach(item => {
+      const card = document.createElement("div");
+      card.className = "note-card";
+      card.style.background = COLORS[Math.floor(Math.random()*COLORS.length)];
+      card.dataset.key = item.key;
 
-  const right = document.createElement("div");
+      const left = document.createElement("div");
+      left.className = "note-left";
+      const p = document.createElement("p"); p.className = "note-text"; p.textContent = item.text;
+      const t = document.createElement("p"); t.className = "note-time"; t.textContent = "🕓 " + (item.time ? new Date(item.time).toLocaleString() : "");
+      left.appendChild(p); left.appendChild(t);
 
-  // ❌ Chỉ hiển thị nút xóa nếu đúng userId
-  if(note.userId === userId){
-    const delBtn = document.createElement("button");
-    delBtn.textContent="❌";
-    delBtn.title="Xóa ghi chú của bạn";
-    delBtn.className="text-red-500 hover:text-red-700 px-2 py-1 rounded";
-    delBtn.addEventListener("click",()=>{
-      if(!confirm("Xác nhận xóa ghi chú này?")) return;
-      remove(ref(db,"notes/"+key))
-        .then(()=>{ const el = notesContainer.querySelector(`[data-key="${key}"]`); if(el) el.remove(); })
-        .catch(err=>{console.error(err); alert("Không xóa được, xem console."); });
+      const actions = document.createElement("div"); actions.className = "note-actions";
+
+      // delete only if owner (client-side check)
+      if(item.userId === userId){
+        const btn = document.createElement("button");
+        btn.className = "btn-delete"; btn.textContent = "❌";
+        btn.title = "Xóa của bạn";
+        btn.onclick = () => {
+          if(!confirm("Xác nhận xóa ghi chú này?")) return;
+          remove(ref(db, "notes/" + item.key))
+            .catch(err => { console.error("Remove err:", err); alert("Không xóa được (xem console)."); });
+        };
+        actions.appendChild(btn);
+      } else {
+        const spacer = document.createElement("div"); spacer.style.width="34px"; actions.appendChild(spacer);
+      }
+
+      card.appendChild(left);
+      card.appendChild(actions);
+
+      notesList.appendChild(card);
     });
-    right.appendChild(delBtn);
-  }
+  });
 
-  div.appendChild(left);
-  div.appendChild(right);
-  notesContainer.prepend(div);
-});
-</script>
+  // accessibility: focus input on load
+  window.addEventListener("load", () => noteInput.focus());
+  </script>
 </body>
 </html>

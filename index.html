@@ -1,139 +1,275 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>🎃 Xàm LoL cùng 12A2 — Halloween</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>🎃 Xàm LoL cùng 12A2 — Halloween Cháy Phố</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-<link rel="manifest" href="./manifest.json">
-<meta name="theme-color" content="#ff8a3d">
 <style>
-:root{
-  --bg-dark:#080409; --orange:#ff8a3d; --danger:#ff5c6c;
-}
-*{box-sizing:border-box;}
-html,body{height:100%;margin:0;font-family:Montserrat,Arial,sans-serif;color:#fff;background:linear-gradient(135deg,#0b0210 0%,#20021a 60%);overflow:hidden;}
-.wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
-.panel{width:95%;max-width:1000px;height:88vh;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 20px 60px rgba(0,0,0,0.6);display:grid;grid-template-columns:1fr 350px;gap:16px;}
-.bg-layer{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden;}
-.glow{position:absolute;width:500px;height:500px;border-radius:50%;right:-120px;top:-120px;background:radial-gradient(circle at 30% 30%, rgba(255,140,60,0.12), rgba(90,30,170,0.12) 40%, transparent 60%);filter:blur(36px);mix-blend-mode:screen;animation:spin 28s linear infinite;}
-@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-.left{position:relative;padding:20px;z-index:3;overflow:hidden;}
-.title{position:absolute;top:10px;left:10px;font-weight:700;color:var(--orange);font-size:20px;text-shadow:0 4px 12px rgba(255,120,60,0.25);animation:titleGlow 3s ease-in-out infinite;z-index:5;}
-@keyframes titleGlow{0%{filter:drop-shadow(0 0 6px rgba(255,120,60,0.15))}50%{filter:drop-shadow(0 0 18px rgba(255,120,60,0.45))}100%{filter:drop-shadow(0 0 6px rgba(255,120,60,0.15))}}
-.notes-area{margin-top:26px;height:80vh;overflow:auto;padding-right:10px;display:flex;flex-direction:column;gap:12px;}
-.note-row{display:flex;gap:12px;align-items:flex-start;justify-content:flex-start;animation:pop .22s ease; padding:6px;}
-@keyframes pop{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-.avatar{width:60px;height:60px;border-radius:10px;flex:none;overflow:hidden;border:2px solid rgba(0,0,0,0.06);background:linear-gradient(180deg,#fff,#fff);display:flex;align-items:center;justify-content:center;font-size:28px;}
-.content{flex:1;background:linear-gradient(180deg,#fff,#fff);color:#222;padding:12px;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,0.08);border-left:6px solid rgba(90,30,170,0.85);position:relative;}
-.note-text{margin:0 0 8px 0;font-size:15px;word-break:break-word;}
-.note-meta{font-size:12px;color:#666;margin:0;}
-.actions{display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
-.btn-del{background:transparent;border:none;color:var(--danger);cursor:pointer;font-weight:800;}
-.btn-del:hover{transform:scale(1.06);}
-.right{padding:20px;border-left:1px dashed rgba(255,255,255,0.03);z-index:3;display:flex;flex-direction:column;}
-.control-title{font-weight:700;color:#ffd6a6;margin-bottom:10px;}
-.input-row{display:flex;gap:10px;margin-bottom:10px;}
-.text-input{flex:1;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);font-size:15px;background:rgba(255,255,255,0.02);color:#fff;}
-.send-btn{padding:10px 14px;border-radius:10px;background:linear-gradient(180deg,var(--orange),#ff6b3d);color:#fff;border:none;cursor:pointer;font-weight:800;}
-.small{font-size:13px;color:#ffd6a6;}
-.burst{position:fixed;width:8px;height:8px;border-radius:50%;pointer-events:none;z-index:6;mix-blend-mode:screen;box-shadow:0 0 8px rgba(255,200,120,0.9);}
-.decor-svg{position:fixed;pointer-events:none;z-index:2;font-size:28px;opacity:0.85;}
+  :root{
+    --dark:#0b0710;
+    --glass: rgba(255,255,255,0.96);
+    --orange:#ff7b2d;
+    --purple:#6f2bd8;
+    --accent:#ff4d4d;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:linear-gradient(120deg,#1b0712 0%, #2b0b2f 40%, #200b04 100%); font-family:Montserrat,system-ui,Arial; color:#fff; overflow:hidden}
+  /* wrapper */
+  .wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:28px}
+  .panel{
+    width:95%;max-width:1200px;height:88vh;border-radius:18px;overflow:hidden;position:relative;
+    display:grid;grid-template-columns:1fr 420px;gap:24px;padding:0; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.08));
+    box-shadow:0 40px 100px rgba(0,0,0,0.7);
+  }
+
+  /* animated bg layers */
+  .bg-layer{position:absolute;inset:0;pointer-events:none;z-index:1}
+  .glow1{position:absolute;right:-120px;top:-140px;width:640px;height:640px;border-radius:50%;
+         background:radial-gradient(circle at 25% 25%, rgba(255,140,60,0.14), rgba(123,43,215,0.08) 40%, transparent 60%);filter:blur(40px);mix-blend-mode:screen;animation:rotateSlow 30s linear infinite}
+  .glow2{position:absolute;left:-160px;bottom:-120px;width:520px;height:520px;border-radius:50%;
+         background:radial-gradient(circle at 30% 30%, rgba(123,43,215,0.12), rgba(255,80,60,0.06));filter:blur(30px);mix-blend-mode:screen;animation:rotateSlowRev 28s linear infinite}
+  @keyframes rotateSlow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+  @keyframes rotateSlowRev{from{transform:rotate(0)}to{transform:rotate(-360deg)}}
+
+  /* decorative elements created by JS will be on body (z-index:3) */
+  .decor-svg{position:fixed;pointer-events:none;z-index:4;will-change:transform,opacity}
+
+  /* left (big decorative + notes) */
+  .left{position:relative;padding:28px;z-index:3;overflow:hidden}
+  .title{display:flex;align-items:center;gap:12px}
+  .title h1{margin:0;font-size:32px;color:var(--orange);text-shadow:0 8px 30px rgba(255,120,60,0.12);animation:titleGlow 2.5s ease-in-out infinite}
+  @keyframes titleGlow{0%{filter:drop-shadow(0 0 6px rgba(255,120,60,0.15))}50%{filter:drop-shadow(0 0 20px rgba(255,120,60,0.5))}100%{filter:drop-shadow(0 0 6px rgba(255,120,60,0.15))}}
+  .subtitle{color:#ffd6a6;margin-top:8px;font-weight:600}
+
+  .notes-area{margin-top:18px;height:64vh;overflow:auto;padding-right:8px;display:flex;flex-direction:column;gap:12px}
+  /* note card */
+  .note-card{
+    display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:12px;border-radius:12px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.94));
+    color:#221;border-left:6px solid rgba(255,123,45,0.95);box-shadow:0 12px 30px rgba(0,0,0,0.12);
+    transform-origin:center;transition:transform .18s,box-shadow .18s;
+  }
+  .note-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,0.18)}
+  .note-left{flex:1}
+  .note-text{margin:0 0 6px 0;font-size:15px;word-break:break-word}
+  .note-time{margin:0;font-size:12px;color:#6b6b7a}
+  .note-actions{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+  .btn-del{background:transparent;border:none;color:var(--accent);cursor:pointer;font-weight:800}
+  .btn-del:hover{transform:scale(1.08)}
+
+  /* right column */
+  .right{padding:22px;border-left:1px dashed rgba(255,255,255,0.03);z-index:3;display:flex;flex-direction:column;justify-content:flex-start}
+  .control-title{font-weight:700;color:#ffd6a6;margin-bottom:8px}
+  .input-row{display:flex;gap:10px;margin-bottom:12px}
+  .text-input{flex:1;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);font-size:15px;background:rgba(255,255,255,0.02);color:#fff}
+  .send-btn{padding:10px 14px;border-radius:10px;background:linear-gradient(180deg,var(--orange),#ff5a2d);color:#fff;border:none;cursor:pointer;font-weight:800}
+  .small{font-size:13px;color:#ffd6a6}
+
+  /* big burst pieces */
+  .burst{position:fixed;width:8px;height:8px;border-radius:50%;pointer-events:none;z-index:6;mix-blend-mode:screen;box-shadow:0 0 8px rgba(255,200,120,0.9)}
+
+  /* responsive */
+  @media (max-width:1000px){
+    .panel{grid-template-columns:1fr;height:92vh}
+    .right{border-left:none;border-top:1px dashed rgba(255,255,255,0.03)}
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-<div class="panel" id="panel">
-<div class="bg-layer"><div class="glow"></div></div>
-<div class="title">🎃 Xàm LoL cùng 12A2</div>
-<div class="left">
-<div class="notes-area" id="notesArea" aria-live="polite"></div>
-</div>
-<div class="right">
-<div class="control-title">Ghi chú (Enter để gửi)</div>
-<div class="input-row">
-<input id="textInput" class="text-input" placeholder="Nhập nội dung..." />
-<button id="sendBtn" class="send-btn">Gửi</button>
-</div>
-<div class="small">Realtime • Mới nhất lên đầu</div>
-</div>
-</div>
-</div>
+  <div class="wrap">
+    <div class="panel" id="panel">
+      <div class="bg-layer">
+        <div class="glow1"></div>
+        <div class="glow2"></div>
+      </div>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js"></script>
-<script>
-// Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyCtna9R5Rk7xp5YDoMG9EDeLenKwXYd4kw",
-  authDomain: "ghi-chu-3680a.firebaseapp.com",
-  databaseURL: "https://ghi-chu-3680a-default-rtdb.firebaseio.com",
-  projectId: "ghi-chu-3680a",
-  storageBucket: "ghi-chu-3680a.firebasestorage.app",
-  messagingSenderId: "137043146791",
-  appId: "1:137043146791:web:a192a194f42114700d7602"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-const notesRef = db.ref("notes");
-let userId = localStorage.getItem("userId");
-if(!userId){userId="u-"+Math.random().toString(36).slice(2,10); localStorage.setItem("userId",userId);}
-const textInput=document.getElementById("textInput");
-const sendBtn=document.getElementById("sendBtn");
-const notesArea=document.getElementById("notesArea");
+      <div class="left">
+        <div class="title">
+          <div style="font-size:24px">🎃👻🕷️</div>
+          <h1>Xàm LoL cùng 12A2</h1>
+        </div>
+        <div class="subtitle">Halloween Cháy Phố — Pháo sáng & dơi tung</div>
 
-function sparkBurst(x,y){
-  for(let i=0;i<20;i++){
-    const s=document.createElement("div"); s.className="burst";
-    s.style.left=x+"px"; s.style.top=y+"px";
-    s.style.background=(Math.random()>0.5)?"rgba(255,200,100,1)":"rgba(170,110,240,0.95)";
-    document.body.appendChild(s);
-    const angle=Math.random()*Math.PI*2;
-    const dist=40+Math.random()*200;
-    const dx=Math.cos(angle)*dist, dy=Math.sin(angle)*dist;
-    s.animate([{transform:"translate(0,0) scale(0.6)",opacity:1},{transform:`translate(${dx}px,${dy}px) scale(1.2)`,opacity:0}],{duration:700+Math.random()*600,easing:"cubic-bezier(.2,.9,.2,1)"});
-    setTimeout(()=>s.remove(),1400);
+        <div class="notes-area" id="notesArea" aria-live="polite"></div>
+      </div>
+
+      <div class="right">
+        <div class="control-title">Viết ghi chú (nhấn Enter)</div>
+        <div class="input-row">
+          <input id="noteInput" class="text-input" placeholder="Nhập ghi chú..." />
+          <button id="sendBtn" class="send-btn">Gửi</button>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div class="small">Realtime • Mới nhất lên đầu</div>
+          <div style="display:flex;gap:8px">
+            <button id="clearLocal" class="small" style="background:transparent;border:none;color:#ffd6a6;cursor:pointer">Dọn nhanh</button>
+            <button id="help" class="small" style="background:transparent;border:none;color:#ffd6a6;cursor:pointer">Trợ giúp</button>
+          </div>
+        </div>
+
+        <div class="small">Ai cũng có thể viết. Chỉ xóa được ghi chú của chính mình.</div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+  import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js";
+
+  // ====== Firebase config ======
+  const firebaseConfig = {
+    apiKey: "AIzaSyCtna9R5Rk7xp5YDoMG9EDeLenKwXYd4kw",
+    authDomain: "ghi-chu-3680a.firebaseapp.com",
+    databaseURL: "https://ghi-chu-3680a-default-rtdb.firebaseio.com",
+    projectId: "ghi-chu-3680a",
+    storageBucket: "ghi-chu-3680a.firebasestorage.app",
+    messagingSenderId: "137043146791",
+    appId: "1:137043146791:web:a192a194f42114700d7602",
+    measurementId: "G-N4RLX5X24X"
+  };
+  // ==============================
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const notesRef = ref(db, "notes");
+
+  // local userId - each client has its own id so they only can delete their notes (client-side check)
+  let userId = localStorage.getItem("userId");
+  if(!userId){
+    userId = "u-"+Math.random().toString(36).slice(2,10);
+    localStorage.setItem("userId", userId);
+    console.log("Tạo userId:", userId);
   }
-}
-function pageShake(){
-  document.getElementById("panel").animate([{transform:"translateY(0)"},{transform:"translateY(-6px)"},{transform:"translateY(0)"}],{duration:360,iterations:1,easing:"cubic-bezier(.2,.9,.2,1)"});
-}
-function sendNote(){
-  const txt=textInput.value.trim();
-  if(!txt) return;
-  notesRef.push({text:txt,time:Date.now(),userId});
-  const rect=textInput.getBoundingClientRect(); sparkBurst(rect.left+rect.width/2,rect.top+rect.height/2);
-  pageShake();
-  textInput.value="";
-}
-sendBtn.addEventListener("click",sendNote);
-textInput.addEventListener("keydown",e=>{if(e.key==="Enter")sendNote();});
-notesRef.on("value",snap=>{
-  const data=snap.val();
-  notesArea.innerHTML="";
-  if(!data) return;
-  const arr=Object.entries(data).map(([k,v])=>({...v,key:k})).sort((a,b)=>(b.time||0)-(a.time||0));
-  arr.forEach(item=>{
-    const row=document.createElement("div"); row.className="note-row";
-    const avatar=document.createElement("div"); avatar.className="avatar"; avatar.textContent="🕯️";
-    const content=document.createElement("div"); content.className="content";
-    const textP=document.createElement("p"); textP.className="note-text"; textP.textContent=item.text||"";
-    const meta=document.createElement("p"); meta.className="note-meta"; meta.textContent=(item.time)?("🕓 "+new Date(item.time).toLocaleString()):"";
-    content.appendChild(textP); content.appendChild(meta);
-    const actions=document.createElement("div"); actions.className="actions";
-    if(item.userId===userId){const del=document.createElement("button"); del.className="btn-del"; del.textContent="❌"; del.onclick=()=>{if(confirm("Xác nhận xóa?")) notesRef.child(item.key).remove();}; actions.appendChild(del);}
-    row.appendChild(avatar); row.appendChild(content); row.appendChild(actions);
-    notesArea.appendChild(row);
+
+  // DOM
+  const noteInput = document.getElementById("noteInput");
+  const sendBtn = document.getElementById("sendBtn");
+  const notesArea = document.getElementById("notesArea");
+  const clearLocal = document.getElementById("clearLocal");
+  const panel = document.getElementById("panel");
+
+  // card colors
+  const CARD_COLORS = ["#FFF3E0","#FFF8E1","#FFF0F6","#F3E5F5","#E8F5E9","#E1F5FE","#FFF7E6"];
+
+  // create flying decorative element (bat or pumpkin)
+  function makeDecor(type){
+    const el = document.createElement("div");
+    el.className = "decor-svg";
+    el.style.left = (10 + Math.random()*80) + "%";
+    el.style.top = (5 + Math.random()*70) + "%";
+    el.style.opacity = 0.95;
+    el.style.fontSize = (20 + Math.random()*60) + "px";
+    el.style.transform = `translate(-50%,-50%) rotate(${Math.random()*40-20}deg)`;
+    el.textContent = (type==="bat") ? "🦇" : "🎃";
+    document.body.appendChild(el);
+    // animate across then remove
+    const dur = 3000 + Math.random()*5000;
+    const dir = (Math.random()>0.5) ? 1 : -1;
+    el.animate([
+      { transform: `translate(-50%,-50%) translateX(0) translateY(0) rotate(0)`, opacity:1 },
+      { transform: `translate(-50%,-50%) translateX(${dir* (180 + Math.random()*300)}px) translateY(${(Math.random()*80-40)}px) rotate(${dir*40}deg)`, opacity:0.3 }
+    ], { duration: dur, iterations: 1, easing: "ease-in-out" });
+    setTimeout(()=> el.remove(), dur + 200);
+  }
+
+  // spark burst at coordinates
+  function sparkBurst(x,y){
+    const n = 20 + Math.floor(Math.random()*18);
+    for(let i=0;i<n;i++){
+      const s = document.createElement("div");
+      s.className = "burst";
+      s.style.left = x + "px";
+      s.style.top = y + "px";
+      s.style.background = (Math.random()>0.5) ? "rgba(255,180,80,1)" : "rgba(180,120,255,0.95)";
+      document.body.appendChild(s);
+      const angle = Math.random()*Math.PI*2;
+      const dist = 40 + Math.random()*220;
+      const dx = Math.cos(angle)*dist;
+      const dy = Math.sin(angle)*dist;
+      s.animate([
+        { transform: "translate(0,0) scale(0.5)", opacity:1 },
+        { transform: `translate(${dx}px, ${dy}px) scale(1.2)`, opacity:0 }
+      ], { duration: 700 + Math.random()*600, easing: "cubic-bezier(.2,.9,.2,1)" });
+      setTimeout(()=> s.remove(), 1400);
+    }
+  }
+
+  // page shake animation
+  function pageShake(){
+    panel.animate([
+      { transform: "translateY(0)" },
+      { transform: "translateY(-8px)" },
+      { transform: "translateY(0)" }
+    ], { duration: 360, iterations: 1, easing: "cubic-bezier(.2,.9,.2,1)" });
+  }
+
+  // send note
+  async function sendNote(){
+    const txt = noteInput.value.trim();
+    if(!txt) return;
+    try{
+      const res = await push(notesRef, { text: txt, time: Date.now(), userId });
+      // visual effects
+      const rect = noteInput.getBoundingClientRect();
+      sparkBurst(rect.left + rect.width/2, rect.top + rect.height/2);
+      if(Math.random() > 0.35) makeDecor(Math.random()>0.5 ? "bat" : "pumpkin");
+      pageShake();
+      noteInput.value = "";
+      noteInput.focus();
+    } catch(err){
+      console.error("Push error:", err);
+      alert("Không lưu được (xem console).");
+    }
+  }
+
+  sendBtn.addEventListener("click", sendNote);
+  noteInput.addEventListener("keydown", (e) => { if(e.key === "Enter") sendNote(); });
+  clearLocal.addEventListener("click", () => { if(confirm("Xóa nhanh trên giao diện? (Không xóa DB)")) notesArea.innerHTML = ""; });
+
+  // render notes (full list sorted newest first)
+  onValue(notesRef, snap => {
+    const data = snap.val();
+    notesArea.innerHTML = "";
+    if(!data) return;
+    const arr = Object.entries(data).map(([k,v]) => ({ key:k, ...v }))
+      .sort((a,b) => (b.time || 0) - (a.time || 0));
+    arr.forEach(item => {
+      const card = document.createElement("div");
+      card.className = "note-card";
+      card.dataset.key = item.key;
+      card.style.background = CARD_COLORS[Math.floor(Math.random()*CARD_COLORS.length)];
+
+      const left = document.createElement("div"); left.className = "note-left";
+      const p = document.createElement("p"); p.className = "note-text"; p.textContent = item.text;
+      const t = document.createElement("p"); t.className = "note-time"; t.textContent = "🕓 " + (item.time ? new Date(item.time).toLocaleString() : "");
+      left.appendChild(p); left.appendChild(t);
+
+      const actions = document.createElement("div"); actions.className = "note-actions";
+
+      if(item.userId === userId){
+        const btn = document.createElement("button");
+        btn.className = "btn-del"; btn.textContent = "❌"; btn.title = "Xóa của bạn";
+        btn.onclick = () => {
+          if(!confirm("Xác nhận xóa ghi chú này?")) return;
+          remove(ref(db, "notes/" + item.key)).catch(err => { console.error("Remove error:", err); alert("Xóa thất bại (xem console)."); });
+        };
+        actions.appendChild(btn);
+      } else {
+        const spacer = document.createElement("div"); spacer.style.width="34px"; actions.appendChild(spacer);
+      }
+
+      card.appendChild(left); card.appendChild(actions);
+      notesArea.appendChild(card);
+    });
   });
-});
-setInterval(()=>{
-  const el=document.createElement("div"); el.className="decor-svg";
-  el.style.left=(5+Math.random()*90)+"%"; el.style.top=(5+Math.random()*85)+"%";
-  el.textContent=Math.random()>0.5?"🦇":"👻"; el.style.fontSize=(22+Math.random()*30)+"px"; document.body.appendChild(el);
-  el.animate([{transform:"translate(0,0)",opacity:0.85},{transform:`translate(${Math.random()*80-40}px,${Math.random()*40-20}px)`,opacity:0.2}],{duration:7000,iterations:1,easing:"ease-in-out"});
-  setTimeout(()=>el.remove(),7500);
-},2000);
-window.addEventListener("load",()=>textInput.focus());
-</script>
+
+  // periodic decor
+  setInterval(()=> { if(Math.random() < 0.75) makeDecor(Math.random()>0.5 ? "bat" : "pumpkin"); }, 1800);
+
+  // focus input
+  window.addEventListener("load", () => { noteInput.focus(); });
+  </script>
 </body>
 </html>

@@ -69,7 +69,6 @@ html,body{height:100%;margin:0;background:linear-gradient(135deg,#0b0210 0%, #20
 </div>
 <div style="display:flex;align-items:center;justify-content:space-between">
 <div class="small">Realtime • Mới nhất lên đầu</div>
-<div style="display:flex;gap:8px"></div>
 </div>
 </div>
 </div>
@@ -145,7 +144,6 @@ notesRef.on("value",snap=>{
   });
 });
 
-// light decor flying elements
 setInterval(()=>{
   const el=document.createElement("div"); el.className="decor-svg";
   el.style.left=(5+Math.random()*90)+"%"; el.style.top=(5+Math.random()*85)+"%";
@@ -155,11 +153,6 @@ setInterval(()=>{
 },2000);
 
 window.addEventListener("load",()=>textInput.focus());
-</script>
-<script>
-if ('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js');});
-}
 </script>
 </body>
 </html>

@@ -1,54 +1,44 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>🎃 Xàm LoL cùng 12A2 — Halloween PWA</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🎃 Xàm LoL cùng 12A2 — Halloween</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#ff8a3d">
 <style>
 :root{
-  --bg-dark:#080409;
-  --purple:#5b2bbf;
-  --orange:#ff8a3d;
-  --card:#fffdf9;
-  --danger:#ff5c6c;
+  --bg-dark:#080409; --orange:#ff8a3d; --danger:#ff5c6c;
 }
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;background:linear-gradient(135deg,#0b0210 0%, #20021a 60%);font-family:Montserrat,system-ui,Arial;color:#fff;overflow:hidden}
-.wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:26px}
-.panel{
-  width:96%;max-width:1100px;height:88vh;border-radius:14px;overflow:hidden;position:relative;
-  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  box-shadow:0 30px 80px rgba(0,0,0,0.7);display:grid;grid-template-columns:1fr 380px;gap:18px;
-}
-.bg-layer{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
-.glow{position:absolute;width:560px;height:560px;border-radius:50%;right:-140px;top:-140px;background:radial-gradient(circle at 30% 30%, rgba(255,140,60,0.12), rgba(90,30,170,0.12) 40%, transparent 60%);filter:blur(36px);mix-blend-mode:screen;animation:spin 28s linear infinite}
+*{box-sizing:border-box;}
+html,body{height:100%;margin:0;font-family:Montserrat,Arial,sans-serif;color:#fff;background:linear-gradient(135deg,#0b0210 0%,#20021a 60%);overflow:hidden;}
+.wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+.panel{width:95%;max-width:1000px;height:88vh;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 20px 60px rgba(0,0,0,0.6);display:grid;grid-template-columns:1fr 350px;gap:16px;}
+.bg-layer{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden;}
+.glow{position:absolute;width:500px;height:500px;border-radius:50%;right:-120px;top:-120px;background:radial-gradient(circle at 30% 30%, rgba(255,140,60,0.12), rgba(90,30,170,0.12) 40%, transparent 60%);filter:blur(36px);mix-blend-mode:screen;animation:spin 28s linear infinite;}
 @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-.left{position:relative;padding:26px;z-index:3;overflow:hidden}
-.title{position:absolute;top:12px;left:12px;font-weight:700;color:var(--orange);font-size:20px;text-shadow:0 4px 12px rgba(255,120,60,0.25);animation:titleGlow 3s ease-in-out infinite;z-index:5}
+.left{position:relative;padding:20px;z-index:3;overflow:hidden;}
+.title{position:absolute;top:10px;left:10px;font-weight:700;color:var(--orange);font-size:20px;text-shadow:0 4px 12px rgba(255,120,60,0.25);animation:titleGlow 3s ease-in-out infinite;z-index:5;}
 @keyframes titleGlow{0%{filter:drop-shadow(0 0 6px rgba(255,120,60,0.15))}50%{filter:drop-shadow(0 0 18px rgba(255,120,60,0.45))}100%{filter:drop-shadow(0 0 6px rgba(255,120,60,0.15))}}
-.notes-area{margin-top:26px;height:80vh;overflow:auto;padding-right:10px;display:flex;flex-direction:column;gap:12px}
-.note-row{display:flex;gap:12px;align-items:flex-start;justify-content:flex-start;transform-origin:center;animation:pop .22s ease; padding:6px}
+.notes-area{margin-top:26px;height:80vh;overflow:auto;padding-right:10px;display:flex;flex-direction:column;gap:12px;}
+.note-row{display:flex;gap:12px;align-items:flex-start;justify-content:flex-start;animation:pop .22s ease; padding:6px;}
 @keyframes pop{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-.avatar{width:68px;height:68px;border-radius:10px;flex:none;overflow:hidden;border:2px solid rgba(0,0,0,0.06);background:linear-gradient(180deg,#fff,#fff);display:flex;align-items:center;justify-content:center;font-size:28px}
-.content{flex:1;background:linear-gradient(180deg, #fff, #fff);color:#222;padding:12px;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,0.08);border-left:6px solid rgba(90,30,170,0.85); position:relative;}
-.note-text{margin:0 0 8px 0;font-size:15px;word-break:break-word}
-.note-meta{font-size:12px;color:#666;margin:0}
-.actions{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
-.btn-del{background:transparent;border:none;color:var(--danger);cursor:pointer;font-weight:800}
-.btn-del:hover{transform:scale(1.06)}
-.right{padding:20px;border-left:1px dashed rgba(255,255,255,0.03);z-index:3;display:flex;flex-direction:column}
-.control-title{font-weight:700;color:#ffd6a6;margin-bottom:10px}
-.input-row{display:flex;gap:10px;margin-bottom:10px}
-.text-input{flex:1;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);font-size:15px;background:rgba(255,255,255,0.02);color:#fff}
-.send-btn{padding:10px 14px;border-radius:10px;background:linear-gradient(180deg,var(--orange),#ff6b3d);color:#fff;border:none;cursor:pointer;font-weight:800}
-.small{font-size:13px;color:#ffd6a6}
-.hint{margin-top:12px;color:#caa6ff;font-size:13px}
-.burst{position:fixed;width:8px;height:8px;border-radius:50%;pointer-events:none;z-index:6;mix-blend-mode:screen;box-shadow:0 0 8px rgba(255,200,120,0.9)}
-.decor-svg{position:fixed;pointer-events:none;z-index:2;font-size:28px;opacity:0.85}
-@media (max-width:980px){.panel{grid-template-columns:1fr;height:92vh}.right{border-left:none;border-top:1px dashed rgba(255,255,255,0.03)}}
+.avatar{width:60px;height:60px;border-radius:10px;flex:none;overflow:hidden;border:2px solid rgba(0,0,0,0.06);background:linear-gradient(180deg,#fff,#fff);display:flex;align-items:center;justify-content:center;font-size:28px;}
+.content{flex:1;background:linear-gradient(180deg,#fff,#fff);color:#222;padding:12px;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,0.08);border-left:6px solid rgba(90,30,170,0.85);position:relative;}
+.note-text{margin:0 0 8px 0;font-size:15px;word-break:break-word;}
+.note-meta{font-size:12px;color:#666;margin:0;}
+.actions{display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+.btn-del{background:transparent;border:none;color:var(--danger);cursor:pointer;font-weight:800;}
+.btn-del:hover{transform:scale(1.06);}
+.right{padding:20px;border-left:1px dashed rgba(255,255,255,0.03);z-index:3;display:flex;flex-direction:column;}
+.control-title{font-weight:700;color:#ffd6a6;margin-bottom:10px;}
+.input-row{display:flex;gap:10px;margin-bottom:10px;}
+.text-input{flex:1;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);font-size:15px;background:rgba(255,255,255,0.02);color:#fff;}
+.send-btn{padding:10px 14px;border-radius:10px;background:linear-gradient(180deg,var(--orange),#ff6b3d);color:#fff;border:none;cursor:pointer;font-weight:800;}
+.small{font-size:13px;color:#ffd6a6;}
+.burst{position:fixed;width:8px;height:8px;border-radius:50%;pointer-events:none;z-index:6;mix-blend-mode:screen;box-shadow:0 0 8px rgba(255,200,120,0.9);}
+.decor-svg{position:fixed;pointer-events:none;z-index:2;font-size:28px;opacity:0.85;}
 </style>
 </head>
 <body>
@@ -56,20 +46,16 @@ html,body{height:100%;margin:0;background:linear-gradient(135deg,#0b0210 0%, #20
 <div class="panel" id="panel">
 <div class="bg-layer"><div class="glow"></div></div>
 <div class="title">🎃 Xàm LoL cùng 12A2</div>
-
 <div class="left">
 <div class="notes-area" id="notesArea" aria-live="polite"></div>
 </div>
-
 <div class="right">
 <div class="control-title">Ghi chú (Enter để gửi)</div>
 <div class="input-row">
 <input id="textInput" class="text-input" placeholder="Nhập nội dung..." />
 <button id="sendBtn" class="send-btn">Gửi</button>
 </div>
-<div style="display:flex;align-items:center;justify-content:space-between">
 <div class="small">Realtime • Mới nhất lên đầu</div>
-</div>
 </div>
 </div>
 </div>
@@ -77,6 +63,7 @@ html,body{height:100%;margin:0;background:linear-gradient(135deg,#0b0210 0%, #20
 <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js"></script>
 <script>
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyCtna9R5Rk7xp5YDoMG9EDeLenKwXYd4kw",
   authDomain: "ghi-chu-3680a.firebaseapp.com",
@@ -84,8 +71,7 @@ const firebaseConfig = {
   projectId: "ghi-chu-3680a",
   storageBucket: "ghi-chu-3680a.firebasestorage.app",
   messagingSenderId: "137043146791",
-  appId: "1:137043146791:web:a192a194f42114700d7602",
-  measurementId: "G-N4RLX5X24X"
+  appId: "1:137043146791:web:a192a194f42114700d7602"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
@@ -112,7 +98,6 @@ function sparkBurst(x,y){
 function pageShake(){
   document.getElementById("panel").animate([{transform:"translateY(0)"},{transform:"translateY(-6px)"},{transform:"translateY(0)"}],{duration:360,iterations:1,easing:"cubic-bezier(.2,.9,.2,1)"});
 }
-
 function sendNote(){
   const txt=textInput.value.trim();
   if(!txt) return;
@@ -121,10 +106,8 @@ function sendNote(){
   pageShake();
   textInput.value="";
 }
-
 sendBtn.addEventListener("click",sendNote);
 textInput.addEventListener("keydown",e=>{if(e.key==="Enter")sendNote();});
-
 notesRef.on("value",snap=>{
   const data=snap.val();
   notesArea.innerHTML="";
@@ -143,7 +126,6 @@ notesRef.on("value",snap=>{
     notesArea.appendChild(row);
   });
 });
-
 setInterval(()=>{
   const el=document.createElement("div"); el.className="decor-svg";
   el.style.left=(5+Math.random()*90)+"%"; el.style.top=(5+Math.random()*85)+"%";
@@ -151,7 +133,6 @@ setInterval(()=>{
   el.animate([{transform:"translate(0,0)",opacity:0.85},{transform:`translate(${Math.random()*80-40}px,${Math.random()*40-20}px)`,opacity:0.2}],{duration:7000,iterations:1,easing:"ease-in-out"});
   setTimeout(()=>el.remove(),7500);
 },2000);
-
 window.addEventListener("load",()=>textInput.focus());
 </script>
 </body>
